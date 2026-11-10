@@ -1,0 +1,1093 @@
+{
+  "schema_version": 1,
+  "scenario": "nine_zones_27_robots",
+  "zone_order": [
+    "Z00",
+    "Z01",
+    "Z02",
+    "Z10",
+    "Z11",
+    "Z12",
+    "Z20",
+    "Z21",
+    "Z22"
+  ],
+  "allocation_matrix": [
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0
+    ]
+  ],
+  "allocation_definition": "Rows are pickup/source zones; columns are delivery zones; entries count transport tasks.",
+  "initial_robot_counts": {
+    "Z00": 3,
+    "Z01": 3,
+    "Z02": 3,
+    "Z10": 3,
+    "Z11": 3,
+    "Z12": 3,
+    "Z20": 3,
+    "Z21": 3,
+    "Z22": 3
+  },
+  "initial_robot_matrix": [
+    [
+      3,
+      3,
+      3
+    ],
+    [
+      3,
+      3,
+      3
+    ],
+    [
+      3,
+      3,
+      3
+    ]
+  ],
+  "tasks": [
+    {
+      "id": "transport-000",
+      "robot_id": 0,
+      "payload_id": "payload-000",
+      "source_zone_id": "Z00",
+      "destination_zone_id": "Z11",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z00",
+          "location": [
+            13,
+            8
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z11",
+          "location": [
+            33,
+            28
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-001",
+      "robot_id": 1,
+      "payload_id": "payload-001",
+      "source_zone_id": "Z00",
+      "destination_zone_id": "Z12",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z00",
+          "location": [
+            8,
+            15
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z12",
+          "location": [
+            25,
+            48
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-002",
+      "robot_id": 2,
+      "payload_id": "payload-002",
+      "source_zone_id": "Z00",
+      "destination_zone_id": "Z20",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z00",
+          "location": [
+            15,
+            12
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z20",
+          "location": [
+            45,
+            12
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-003",
+      "robot_id": 3,
+      "payload_id": "payload-003",
+      "source_zone_id": "Z01",
+      "destination_zone_id": "Z12",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z01",
+          "location": [
+            12,
+            33
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z12",
+          "location": [
+            35,
+            52
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-004",
+      "robot_id": 4,
+      "payload_id": "payload-004",
+      "source_zone_id": "Z01",
+      "destination_zone_id": "Z20",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z01",
+          "location": [
+            13,
+            28
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z20",
+          "location": [
+            52,
+            15
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-005",
+      "robot_id": 5,
+      "payload_id": "payload-005",
+      "source_zone_id": "Z01",
+      "destination_zone_id": "Z21",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z01",
+          "location": [
+            8,
+            27
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z21",
+          "location": [
+            45,
+            28
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-006",
+      "robot_id": 6,
+      "payload_id": "payload-006",
+      "source_zone_id": "Z02",
+      "destination_zone_id": "Z20",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z02",
+          "location": [
+            8,
+            47
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z20",
+          "location": [
+            43,
+            8
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-007",
+      "robot_id": 7,
+      "payload_id": "payload-007",
+      "source_zone_id": "Z02",
+      "destination_zone_id": "Z21",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z02",
+          "location": [
+            15,
+            52
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z21",
+          "location": [
+            48,
+            35
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-008",
+      "robot_id": 8,
+      "payload_id": "payload-008",
+      "source_zone_id": "Z02",
+      "destination_zone_id": "Z22",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z02",
+          "location": [
+            12,
+            45
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z22",
+          "location": [
+            45,
+            52
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-009",
+      "robot_id": 9,
+      "payload_id": "payload-009",
+      "source_zone_id": "Z10",
+      "destination_zone_id": "Z21",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z10",
+          "location": [
+            27,
+            12
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z21",
+          "location": [
+            52,
+            25
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-010",
+      "robot_id": 10,
+      "payload_id": "payload-010",
+      "source_zone_id": "Z10",
+      "destination_zone_id": "Z22",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z10",
+          "location": [
+            32,
+            13
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z22",
+          "location": [
+            48,
+            45
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-011",
+      "robot_id": 11,
+      "payload_id": "payload-011",
+      "source_zone_id": "Z10",
+      "destination_zone_id": "Z00",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z10",
+          "location": [
+            33,
+            8
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z00",
+          "location": [
+            12,
+            15
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-012",
+      "robot_id": 12,
+      "payload_id": "payload-012",
+      "source_zone_id": "Z11",
+      "destination_zone_id": "Z22",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z11",
+          "location": [
+            32,
+            27
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z22",
+          "location": [
+            43,
+            48
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-013",
+      "robot_id": 13,
+      "payload_id": "payload-013",
+      "source_zone_id": "Z11",
+      "destination_zone_id": "Z00",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z11",
+          "location": [
+            27,
+            32
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z00",
+          "location": [
+            15,
+            8
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-014",
+      "robot_id": 14,
+      "payload_id": "payload-014",
+      "source_zone_id": "Z11",
+      "destination_zone_id": "Z01",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z11",
+          "location": [
+            32,
+            33
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z01",
+          "location": [
+            8,
+            35
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-015",
+      "robot_id": 15,
+      "payload_id": "payload-015",
+      "source_zone_id": "Z12",
+      "destination_zone_id": "Z00",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z12",
+          "location": [
+            27,
+            52
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z00",
+          "location": [
+            8,
+            17
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-016",
+      "robot_id": 16,
+      "payload_id": "payload-016",
+      "source_zone_id": "Z12",
+      "destination_zone_id": "Z01",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z12",
+          "location": [
+            33,
+            48
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z01",
+          "location": [
+            15,
+            32
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-017",
+      "robot_id": 17,
+      "payload_id": "payload-017",
+      "source_zone_id": "Z12",
+      "destination_zone_id": "Z02",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z12",
+          "location": [
+            28,
+            47
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z02",
+          "location": [
+            15,
+            48
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-018",
+      "robot_id": 18,
+      "payload_id": "payload-018",
+      "source_zone_id": "Z20",
+      "destination_zone_id": "Z01",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z20",
+          "location": [
+            52,
+            13
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z01",
+          "location": [
+            12,
+            25
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-019",
+      "robot_id": 19,
+      "payload_id": "payload-019",
+      "source_zone_id": "Z20",
+      "destination_zone_id": "Z02",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z20",
+          "location": [
+            45,
+            8
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z02",
+          "location": [
+            8,
+            45
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-020",
+      "robot_id": 20,
+      "payload_id": "payload-020",
+      "source_zone_id": "Z20",
+      "destination_zone_id": "Z10",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z20",
+          "location": [
+            48,
+            15
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z10",
+          "location": [
+            25,
+            8
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-021",
+      "robot_id": 21,
+      "payload_id": "payload-021",
+      "source_zone_id": "Z21",
+      "destination_zone_id": "Z02",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z21",
+          "location": [
+            47,
+            32
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z02",
+          "location": [
+            17,
+            52
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-022",
+      "robot_id": 22,
+      "payload_id": "payload-022",
+      "source_zone_id": "Z21",
+      "destination_zone_id": "Z10",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z21",
+          "location": [
+            52,
+            33
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z10",
+          "location": [
+            28,
+            15
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-023",
+      "robot_id": 23,
+      "payload_id": "payload-023",
+      "source_zone_id": "Z21",
+      "destination_zone_id": "Z11",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z21",
+          "location": [
+            48,
+            27
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z11",
+          "location": [
+            28,
+            27
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-024",
+      "robot_id": 24,
+      "payload_id": "payload-024",
+      "source_zone_id": "Z22",
+      "destination_zone_id": "Z10",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z22",
+          "location": [
+            48,
+            47
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z10",
+          "location": [
+            35,
+            12
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-025",
+      "robot_id": 25,
+      "payload_id": "payload-025",
+      "source_zone_id": "Z22",
+      "destination_zone_id": "Z11",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z22",
+          "location": [
+            45,
+            48
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z11",
+          "location": [
+            25,
+            28
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    },
+    {
+      "id": "transport-026",
+      "robot_id": 26,
+      "payload_id": "payload-026",
+      "source_zone_id": "Z22",
+      "destination_zone_id": "Z12",
+      "release_at_s": 0,
+      "payload": {
+        "type": "tote",
+        "mass_kg": 5
+      },
+      "stages": [
+        {
+          "index": 0,
+          "operation": "pickup",
+          "zone_id": "Z22",
+          "location": [
+            52,
+            45
+          ],
+          "nominal_service_time_s": 2
+        },
+        {
+          "index": 1,
+          "operation": "dropoff",
+          "zone_id": "Z12",
+          "location": [
+            32,
+            45
+          ],
+          "nominal_service_time_s": 2
+        }
+      ],
+      "finish_behavior": "park_in_private_dropoff_bay"
+    }
+  ],
+  "execution_note": "scenario.json goals execute pickup then dropoff as two finite native goal visits. The robot remains in its private dropoff bay afterwards. Payload mass and identity are labels; loading physics and configurable service times are not implemented."
+}

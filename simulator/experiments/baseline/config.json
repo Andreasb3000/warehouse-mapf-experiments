@@ -1,0 +1,28 @@
+{
+  "source_revision": "affaa43db4faf2595e2126fe26234ce475eee596",
+  "image": "lunjohnzhang/lsmart@sha256:4dad94f9f9be52d22820be540dfaf0c74f07f5c8232e684fc03f8bc78f974657",
+  "parameters": {
+    "map_filepath": "maps/kiva_large_w_mode.json",
+    "num_agents": 10,
+    "seed": 42,
+    "n_threads": 1,
+    "sim_duration": 600,
+    "ticks_per_second": 10,
+    "planner": "RHCR",
+    "solver": "PBS",
+    "single_agent_solver": "SIPP",
+    "backup_solver": "PIBT",
+    "planner_invoke_policy": "default",
+    "task_assigner_type": "windowed",
+    "sim_window_tick": 20,
+    "planning_window": 10,
+    "cutoffTime": 1,
+    "velocity": 200,
+    "stop_at_congestion": true,
+    "rotation": false,
+    "rotation_time": 1,
+    "prioritize_start": true,
+    "suboptimal_bound": 1,
+    "screen": 0
+  }
+}

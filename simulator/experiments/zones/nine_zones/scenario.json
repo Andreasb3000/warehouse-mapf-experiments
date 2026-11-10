@@ -1,0 +1,2302 @@
+{
+  "schema_version": 1,
+  "name": "nine_zones_27_robots",
+  "description": "Nine connected warehouse zones with 3 robots per zone. Four two-way corners, four T junctions, and one four-way crossing are joined by three-cell aisles. Each robot picks up locally, delivers to another zone, then parks in its private dropoff bay.",
+  "map_file": "map.json",
+  "tasks_file": "tasks.json",
+  "coordinate_order": [
+    "row",
+    "column"
+  ],
+  "cell_size_m": 1,
+  "initial_orientation": "north",
+  "ticks_per_second": 10,
+  "task_mode": "finite",
+  "agents": [
+    {
+      "id": 0,
+      "zone_id": "Z00",
+      "approach": "Z00",
+      "pickup_zone_id": "Z00",
+      "destination_zone_id": "Z11",
+      "start": [
+        8,
+        13
+      ],
+      "goals": [
+        [
+          13,
+          8
+        ],
+        [
+          33,
+          28
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-000",
+      "payload_id": "payload-000",
+      "color": "#2563eb"
+    },
+    {
+      "id": 1,
+      "zone_id": "Z00",
+      "approach": "Z00",
+      "pickup_zone_id": "Z00",
+      "destination_zone_id": "Z12",
+      "start": [
+        13,
+        12
+      ],
+      "goals": [
+        [
+          8,
+          15
+        ],
+        [
+          25,
+          48
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-001",
+      "payload_id": "payload-001",
+      "color": "#2563eb"
+    },
+    {
+      "id": 2,
+      "zone_id": "Z00",
+      "approach": "Z00",
+      "pickup_zone_id": "Z00",
+      "destination_zone_id": "Z20",
+      "start": [
+        12,
+        13
+      ],
+      "goals": [
+        [
+          15,
+          12
+        ],
+        [
+          45,
+          12
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-002",
+      "payload_id": "payload-002",
+      "color": "#2563eb"
+    },
+    {
+      "id": 3,
+      "zone_id": "Z01",
+      "approach": "Z01",
+      "pickup_zone_id": "Z01",
+      "destination_zone_id": "Z12",
+      "start": [
+        8,
+        33
+      ],
+      "goals": [
+        [
+          12,
+          33
+        ],
+        [
+          35,
+          52
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-003",
+      "payload_id": "payload-003",
+      "color": "#0d9488"
+    },
+    {
+      "id": 4,
+      "zone_id": "Z01",
+      "approach": "Z01",
+      "pickup_zone_id": "Z01",
+      "destination_zone_id": "Z20",
+      "start": [
+        13,
+        32
+      ],
+      "goals": [
+        [
+          13,
+          28
+        ],
+        [
+          52,
+          15
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-004",
+      "payload_id": "payload-004",
+      "color": "#0d9488"
+    },
+    {
+      "id": 5,
+      "zone_id": "Z01",
+      "approach": "Z01",
+      "pickup_zone_id": "Z01",
+      "destination_zone_id": "Z21",
+      "start": [
+        12,
+        27
+      ],
+      "goals": [
+        [
+          8,
+          27
+        ],
+        [
+          45,
+          28
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-005",
+      "payload_id": "payload-005",
+      "color": "#0d9488"
+    },
+    {
+      "id": 6,
+      "zone_id": "Z02",
+      "approach": "Z02",
+      "pickup_zone_id": "Z02",
+      "destination_zone_id": "Z20",
+      "start": [
+        13,
+        52
+      ],
+      "goals": [
+        [
+          8,
+          47
+        ],
+        [
+          43,
+          8
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-006",
+      "payload_id": "payload-006",
+      "color": "#ea580c"
+    },
+    {
+      "id": 7,
+      "zone_id": "Z02",
+      "approach": "Z02",
+      "pickup_zone_id": "Z02",
+      "destination_zone_id": "Z21",
+      "start": [
+        12,
+        47
+      ],
+      "goals": [
+        [
+          15,
+          52
+        ],
+        [
+          48,
+          35
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-007",
+      "payload_id": "payload-007",
+      "color": "#ea580c"
+    },
+    {
+      "id": 8,
+      "zone_id": "Z02",
+      "approach": "Z02",
+      "pickup_zone_id": "Z02",
+      "destination_zone_id": "Z22",
+      "start": [
+        13,
+        48
+      ],
+      "goals": [
+        [
+          12,
+          45
+        ],
+        [
+          45,
+          52
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-008",
+      "payload_id": "payload-008",
+      "color": "#ea580c"
+    },
+    {
+      "id": 9,
+      "zone_id": "Z10",
+      "approach": "Z10",
+      "pickup_zone_id": "Z10",
+      "destination_zone_id": "Z21",
+      "start": [
+        27,
+        8
+      ],
+      "goals": [
+        [
+          27,
+          12
+        ],
+        [
+          52,
+          25
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-009",
+      "payload_id": "payload-009",
+      "color": "#9333ea"
+    },
+    {
+      "id": 10,
+      "zone_id": "Z10",
+      "approach": "Z10",
+      "pickup_zone_id": "Z10",
+      "destination_zone_id": "Z22",
+      "start": [
+        28,
+        13
+      ],
+      "goals": [
+        [
+          32,
+          13
+        ],
+        [
+          48,
+          45
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-010",
+      "payload_id": "payload-010",
+      "color": "#9333ea"
+    },
+    {
+      "id": 11,
+      "zone_id": "Z10",
+      "approach": "Z10",
+      "pickup_zone_id": "Z10",
+      "destination_zone_id": "Z00",
+      "start": [
+        33,
+        12
+      ],
+      "goals": [
+        [
+          33,
+          8
+        ],
+        [
+          12,
+          15
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-011",
+      "payload_id": "payload-011",
+      "color": "#9333ea"
+    },
+    {
+      "id": 12,
+      "zone_id": "Z11",
+      "approach": "Z11",
+      "pickup_zone_id": "Z11",
+      "destination_zone_id": "Z22",
+      "start": [
+        27,
+        28
+      ],
+      "goals": [
+        [
+          32,
+          27
+        ],
+        [
+          43,
+          48
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-012",
+      "payload_id": "payload-012",
+      "color": "#be123c"
+    },
+    {
+      "id": 13,
+      "zone_id": "Z11",
+      "approach": "Z11",
+      "pickup_zone_id": "Z11",
+      "destination_zone_id": "Z00",
+      "start": [
+        28,
+        33
+      ],
+      "goals": [
+        [
+          27,
+          32
+        ],
+        [
+          15,
+          8
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-013",
+      "payload_id": "payload-013",
+      "color": "#be123c"
+    },
+    {
+      "id": 14,
+      "zone_id": "Z11",
+      "approach": "Z11",
+      "pickup_zone_id": "Z11",
+      "destination_zone_id": "Z01",
+      "start": [
+        33,
+        32
+      ],
+      "goals": [
+        [
+          32,
+          33
+        ],
+        [
+          8,
+          35
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-014",
+      "payload_id": "payload-014",
+      "color": "#be123c"
+    },
+    {
+      "id": 15,
+      "zone_id": "Z12",
+      "approach": "Z12",
+      "pickup_zone_id": "Z12",
+      "destination_zone_id": "Z00",
+      "start": [
+        27,
+        48
+      ],
+      "goals": [
+        [
+          27,
+          52
+        ],
+        [
+          8,
+          17
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-015",
+      "payload_id": "payload-015",
+      "color": "#047857"
+    },
+    {
+      "id": 16,
+      "zone_id": "Z12",
+      "approach": "Z12",
+      "pickup_zone_id": "Z12",
+      "destination_zone_id": "Z01",
+      "start": [
+        33,
+        52
+      ],
+      "goals": [
+        [
+          33,
+          48
+        ],
+        [
+          15,
+          32
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-016",
+      "payload_id": "payload-016",
+      "color": "#047857"
+    },
+    {
+      "id": 17,
+      "zone_id": "Z12",
+      "approach": "Z12",
+      "pickup_zone_id": "Z12",
+      "destination_zone_id": "Z02",
+      "start": [
+        32,
+        47
+      ],
+      "goals": [
+        [
+          28,
+          47
+        ],
+        [
+          15,
+          48
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-017",
+      "payload_id": "payload-017",
+      "color": "#047857"
+    },
+    {
+      "id": 18,
+      "zone_id": "Z20",
+      "approach": "Z20",
+      "pickup_zone_id": "Z20",
+      "destination_zone_id": "Z01",
+      "start": [
+        47,
+        8
+      ],
+      "goals": [
+        [
+          52,
+          13
+        ],
+        [
+          12,
+          25
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-018",
+      "payload_id": "payload-018",
+      "color": "#0369a1"
+    },
+    {
+      "id": 19,
+      "zone_id": "Z20",
+      "approach": "Z20",
+      "pickup_zone_id": "Z20",
+      "destination_zone_id": "Z02",
+      "start": [
+        48,
+        13
+      ],
+      "goals": [
+        [
+          45,
+          8
+        ],
+        [
+          8,
+          45
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-019",
+      "payload_id": "payload-019",
+      "color": "#0369a1"
+    },
+    {
+      "id": 20,
+      "zone_id": "Z20",
+      "approach": "Z20",
+      "pickup_zone_id": "Z20",
+      "destination_zone_id": "Z10",
+      "start": [
+        47,
+        12
+      ],
+      "goals": [
+        [
+          48,
+          15
+        ],
+        [
+          25,
+          8
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-020",
+      "payload_id": "payload-020",
+      "color": "#0369a1"
+    },
+    {
+      "id": 21,
+      "zone_id": "Z21",
+      "approach": "Z21",
+      "pickup_zone_id": "Z21",
+      "destination_zone_id": "Z02",
+      "start": [
+        47,
+        28
+      ],
+      "goals": [
+        [
+          47,
+          32
+        ],
+        [
+          17,
+          52
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-021",
+      "payload_id": "payload-021",
+      "color": "#a16207"
+    },
+    {
+      "id": 22,
+      "zone_id": "Z21",
+      "approach": "Z21",
+      "pickup_zone_id": "Z21",
+      "destination_zone_id": "Z10",
+      "start": [
+        48,
+        33
+      ],
+      "goals": [
+        [
+          52,
+          33
+        ],
+        [
+          28,
+          15
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-022",
+      "payload_id": "payload-022",
+      "color": "#a16207"
+    },
+    {
+      "id": 23,
+      "zone_id": "Z21",
+      "approach": "Z21",
+      "pickup_zone_id": "Z21",
+      "destination_zone_id": "Z11",
+      "start": [
+        52,
+        27
+      ],
+      "goals": [
+        [
+          48,
+          27
+        ],
+        [
+          28,
+          27
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-023",
+      "payload_id": "payload-023",
+      "color": "#a16207"
+    },
+    {
+      "id": 24,
+      "zone_id": "Z22",
+      "approach": "Z22",
+      "pickup_zone_id": "Z22",
+      "destination_zone_id": "Z10",
+      "start": [
+        47,
+        48
+      ],
+      "goals": [
+        [
+          48,
+          47
+        ],
+        [
+          35,
+          12
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-024",
+      "payload_id": "payload-024",
+      "color": "#475569"
+    },
+    {
+      "id": 25,
+      "zone_id": "Z22",
+      "approach": "Z22",
+      "pickup_zone_id": "Z22",
+      "destination_zone_id": "Z11",
+      "start": [
+        52,
+        47
+      ],
+      "goals": [
+        [
+          45,
+          48
+        ],
+        [
+          25,
+          28
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-025",
+      "payload_id": "payload-025",
+      "color": "#475569"
+    },
+    {
+      "id": 26,
+      "zone_id": "Z22",
+      "approach": "Z22",
+      "pickup_zone_id": "Z22",
+      "destination_zone_id": "Z12",
+      "start": [
+        47,
+        52
+      ],
+      "goals": [
+        [
+          52,
+          45
+        ],
+        [
+          32,
+          45
+        ]
+      ],
+      "release_at_s": 0,
+      "task_id": "transport-026",
+      "payload_id": "payload-026",
+      "color": "#475569"
+    }
+  ],
+  "zones": [
+    {
+      "id": "Z00",
+      "grid_index": [
+        0,
+        0
+      ],
+      "center": [
+        10,
+        10
+      ],
+      "bounds": {
+        "rows": [
+          1,
+          19
+        ],
+        "cols": [
+          1,
+          19
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          9,
+          11
+        ],
+        "cols": [
+          9,
+          11
+        ]
+      },
+      "kind": "two_way_corner",
+      "degree": 2,
+      "neighbors": {
+        "east": "Z01",
+        "south": "Z10"
+      },
+      "ports": [
+        {
+          "direction": "east",
+          "neighbor": "Z01",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              9,
+              19
+            ],
+            [
+              10,
+              19
+            ],
+            [
+              11,
+              19
+            ]
+          ]
+        },
+        {
+          "direction": "south",
+          "neighbor": "Z10",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              19,
+              11
+            ],
+            [
+              19,
+              10
+            ],
+            [
+              19,
+              9
+            ]
+          ]
+        }
+      ],
+      "color": "#2563eb",
+      "bays": {
+        "starts": [
+          [
+            8,
+            13
+          ],
+          [
+            13,
+            12
+          ],
+          [
+            12,
+            13
+          ]
+        ],
+        "pickups": [
+          [
+            13,
+            8
+          ],
+          [
+            8,
+            15
+          ],
+          [
+            15,
+            12
+          ]
+        ],
+        "dropoffs": [
+          [
+            12,
+            15
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            8,
+            17
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z01",
+      "grid_index": [
+        0,
+        1
+      ],
+      "center": [
+        10,
+        30
+      ],
+      "bounds": {
+        "rows": [
+          1,
+          19
+        ],
+        "cols": [
+          20,
+          39
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          9,
+          11
+        ],
+        "cols": [
+          29,
+          31
+        ]
+      },
+      "kind": "three_way_t",
+      "degree": 3,
+      "neighbors": {
+        "east": "Z02",
+        "south": "Z11",
+        "west": "Z00"
+      },
+      "ports": [
+        {
+          "direction": "east",
+          "neighbor": "Z02",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              9,
+              39
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              11,
+              39
+            ]
+          ]
+        },
+        {
+          "direction": "south",
+          "neighbor": "Z11",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              19,
+              31
+            ],
+            [
+              19,
+              30
+            ],
+            [
+              19,
+              29
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z00",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              11,
+              20
+            ],
+            [
+              10,
+              20
+            ],
+            [
+              9,
+              20
+            ]
+          ]
+        }
+      ],
+      "color": "#0d9488",
+      "bays": {
+        "starts": [
+          [
+            8,
+            33
+          ],
+          [
+            13,
+            32
+          ],
+          [
+            12,
+            27
+          ]
+        ],
+        "pickups": [
+          [
+            12,
+            33
+          ],
+          [
+            13,
+            28
+          ],
+          [
+            8,
+            27
+          ]
+        ],
+        "dropoffs": [
+          [
+            8,
+            35
+          ],
+          [
+            15,
+            32
+          ],
+          [
+            12,
+            25
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z02",
+      "grid_index": [
+        0,
+        2
+      ],
+      "center": [
+        10,
+        50
+      ],
+      "bounds": {
+        "rows": [
+          1,
+          19
+        ],
+        "cols": [
+          40,
+          59
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          9,
+          11
+        ],
+        "cols": [
+          49,
+          51
+        ]
+      },
+      "kind": "two_way_corner",
+      "degree": 2,
+      "neighbors": {
+        "south": "Z12",
+        "west": "Z01"
+      },
+      "ports": [
+        {
+          "direction": "south",
+          "neighbor": "Z12",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              19,
+              51
+            ],
+            [
+              19,
+              50
+            ],
+            [
+              19,
+              49
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z01",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              11,
+              40
+            ],
+            [
+              10,
+              40
+            ],
+            [
+              9,
+              40
+            ]
+          ]
+        }
+      ],
+      "color": "#ea580c",
+      "bays": {
+        "starts": [
+          [
+            13,
+            52
+          ],
+          [
+            12,
+            47
+          ],
+          [
+            13,
+            48
+          ]
+        ],
+        "pickups": [
+          [
+            8,
+            47
+          ],
+          [
+            15,
+            52
+          ],
+          [
+            12,
+            45
+          ]
+        ],
+        "dropoffs": [
+          [
+            15,
+            48
+          ],
+          [
+            8,
+            45
+          ],
+          [
+            17,
+            52
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z10",
+      "grid_index": [
+        1,
+        0
+      ],
+      "center": [
+        30,
+        10
+      ],
+      "bounds": {
+        "rows": [
+          20,
+          39
+        ],
+        "cols": [
+          1,
+          19
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          29,
+          31
+        ],
+        "cols": [
+          9,
+          11
+        ]
+      },
+      "kind": "three_way_t",
+      "degree": 3,
+      "neighbors": {
+        "north": "Z00",
+        "east": "Z11",
+        "south": "Z20"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z00",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              20,
+              9
+            ],
+            [
+              20,
+              10
+            ],
+            [
+              20,
+              11
+            ]
+          ]
+        },
+        {
+          "direction": "east",
+          "neighbor": "Z11",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              29,
+              19
+            ],
+            [
+              30,
+              19
+            ],
+            [
+              31,
+              19
+            ]
+          ]
+        },
+        {
+          "direction": "south",
+          "neighbor": "Z20",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              39,
+              11
+            ],
+            [
+              39,
+              10
+            ],
+            [
+              39,
+              9
+            ]
+          ]
+        }
+      ],
+      "color": "#9333ea",
+      "bays": {
+        "starts": [
+          [
+            27,
+            8
+          ],
+          [
+            28,
+            13
+          ],
+          [
+            33,
+            12
+          ]
+        ],
+        "pickups": [
+          [
+            27,
+            12
+          ],
+          [
+            32,
+            13
+          ],
+          [
+            33,
+            8
+          ]
+        ],
+        "dropoffs": [
+          [
+            25,
+            8
+          ],
+          [
+            28,
+            15
+          ],
+          [
+            35,
+            12
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z11",
+      "grid_index": [
+        1,
+        1
+      ],
+      "center": [
+        30,
+        30
+      ],
+      "bounds": {
+        "rows": [
+          20,
+          39
+        ],
+        "cols": [
+          20,
+          39
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          29,
+          31
+        ],
+        "cols": [
+          29,
+          31
+        ]
+      },
+      "kind": "four_way",
+      "degree": 4,
+      "neighbors": {
+        "north": "Z01",
+        "east": "Z12",
+        "south": "Z21",
+        "west": "Z10"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z01",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              20,
+              29
+            ],
+            [
+              20,
+              30
+            ],
+            [
+              20,
+              31
+            ]
+          ]
+        },
+        {
+          "direction": "east",
+          "neighbor": "Z12",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              29,
+              39
+            ],
+            [
+              30,
+              39
+            ],
+            [
+              31,
+              39
+            ]
+          ]
+        },
+        {
+          "direction": "south",
+          "neighbor": "Z21",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              39,
+              31
+            ],
+            [
+              39,
+              30
+            ],
+            [
+              39,
+              29
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z10",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              31,
+              20
+            ],
+            [
+              30,
+              20
+            ],
+            [
+              29,
+              20
+            ]
+          ]
+        }
+      ],
+      "color": "#be123c",
+      "bays": {
+        "starts": [
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            33
+          ],
+          [
+            33,
+            32
+          ]
+        ],
+        "pickups": [
+          [
+            32,
+            27
+          ],
+          [
+            27,
+            32
+          ],
+          [
+            32,
+            33
+          ]
+        ],
+        "dropoffs": [
+          [
+            33,
+            28
+          ],
+          [
+            28,
+            27
+          ],
+          [
+            25,
+            28
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z12",
+      "grid_index": [
+        1,
+        2
+      ],
+      "center": [
+        30,
+        50
+      ],
+      "bounds": {
+        "rows": [
+          20,
+          39
+        ],
+        "cols": [
+          40,
+          59
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          29,
+          31
+        ],
+        "cols": [
+          49,
+          51
+        ]
+      },
+      "kind": "three_way_t",
+      "degree": 3,
+      "neighbors": {
+        "north": "Z02",
+        "south": "Z22",
+        "west": "Z11"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z02",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              20,
+              49
+            ],
+            [
+              20,
+              50
+            ],
+            [
+              20,
+              51
+            ]
+          ]
+        },
+        {
+          "direction": "south",
+          "neighbor": "Z22",
+          "outward_normal": [
+            1,
+            0
+          ],
+          "cells": [
+            [
+              39,
+              51
+            ],
+            [
+              39,
+              50
+            ],
+            [
+              39,
+              49
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z11",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              31,
+              40
+            ],
+            [
+              30,
+              40
+            ],
+            [
+              29,
+              40
+            ]
+          ]
+        }
+      ],
+      "color": "#047857",
+      "bays": {
+        "starts": [
+          [
+            27,
+            48
+          ],
+          [
+            33,
+            52
+          ],
+          [
+            32,
+            47
+          ]
+        ],
+        "pickups": [
+          [
+            27,
+            52
+          ],
+          [
+            33,
+            48
+          ],
+          [
+            28,
+            47
+          ]
+        ],
+        "dropoffs": [
+          [
+            25,
+            48
+          ],
+          [
+            35,
+            52
+          ],
+          [
+            32,
+            45
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z20",
+      "grid_index": [
+        2,
+        0
+      ],
+      "center": [
+        50,
+        10
+      ],
+      "bounds": {
+        "rows": [
+          40,
+          59
+        ],
+        "cols": [
+          1,
+          19
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          49,
+          51
+        ],
+        "cols": [
+          9,
+          11
+        ]
+      },
+      "kind": "two_way_corner",
+      "degree": 2,
+      "neighbors": {
+        "north": "Z10",
+        "east": "Z21"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z10",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              40,
+              9
+            ],
+            [
+              40,
+              10
+            ],
+            [
+              40,
+              11
+            ]
+          ]
+        },
+        {
+          "direction": "east",
+          "neighbor": "Z21",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              49,
+              19
+            ],
+            [
+              50,
+              19
+            ],
+            [
+              51,
+              19
+            ]
+          ]
+        }
+      ],
+      "color": "#0369a1",
+      "bays": {
+        "starts": [
+          [
+            47,
+            8
+          ],
+          [
+            48,
+            13
+          ],
+          [
+            47,
+            12
+          ]
+        ],
+        "pickups": [
+          [
+            52,
+            13
+          ],
+          [
+            45,
+            8
+          ],
+          [
+            48,
+            15
+          ]
+        ],
+        "dropoffs": [
+          [
+            45,
+            12
+          ],
+          [
+            52,
+            15
+          ],
+          [
+            43,
+            8
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z21",
+      "grid_index": [
+        2,
+        1
+      ],
+      "center": [
+        50,
+        30
+      ],
+      "bounds": {
+        "rows": [
+          40,
+          59
+        ],
+        "cols": [
+          20,
+          39
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          49,
+          51
+        ],
+        "cols": [
+          29,
+          31
+        ]
+      },
+      "kind": "three_way_t",
+      "degree": 3,
+      "neighbors": {
+        "north": "Z11",
+        "east": "Z22",
+        "west": "Z20"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z11",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              40,
+              29
+            ],
+            [
+              40,
+              30
+            ],
+            [
+              40,
+              31
+            ]
+          ]
+        },
+        {
+          "direction": "east",
+          "neighbor": "Z22",
+          "outward_normal": [
+            0,
+            1
+          ],
+          "cells": [
+            [
+              49,
+              39
+            ],
+            [
+              50,
+              39
+            ],
+            [
+              51,
+              39
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z20",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              51,
+              20
+            ],
+            [
+              50,
+              20
+            ],
+            [
+              49,
+              20
+            ]
+          ]
+        }
+      ],
+      "color": "#a16207",
+      "bays": {
+        "starts": [
+          [
+            47,
+            28
+          ],
+          [
+            48,
+            33
+          ],
+          [
+            52,
+            27
+          ]
+        ],
+        "pickups": [
+          [
+            47,
+            32
+          ],
+          [
+            52,
+            33
+          ],
+          [
+            48,
+            27
+          ]
+        ],
+        "dropoffs": [
+          [
+            45,
+            28
+          ],
+          [
+            48,
+            35
+          ],
+          [
+            52,
+            25
+          ]
+        ]
+      }
+    },
+    {
+      "id": "Z22",
+      "grid_index": [
+        2,
+        2
+      ],
+      "center": [
+        50,
+        50
+      ],
+      "bounds": {
+        "rows": [
+          40,
+          59
+        ],
+        "cols": [
+          40,
+          59
+        ]
+      },
+      "conflict_zone": {
+        "rows": [
+          49,
+          51
+        ],
+        "cols": [
+          49,
+          51
+        ]
+      },
+      "kind": "two_way_corner",
+      "degree": 2,
+      "neighbors": {
+        "north": "Z12",
+        "west": "Z21"
+      },
+      "ports": [
+        {
+          "direction": "north",
+          "neighbor": "Z12",
+          "outward_normal": [
+            -1,
+            0
+          ],
+          "cells": [
+            [
+              40,
+              49
+            ],
+            [
+              40,
+              50
+            ],
+            [
+              40,
+              51
+            ]
+          ]
+        },
+        {
+          "direction": "west",
+          "neighbor": "Z21",
+          "outward_normal": [
+            0,
+            -1
+          ],
+          "cells": [
+            [
+              51,
+              40
+            ],
+            [
+              50,
+              40
+            ],
+            [
+              49,
+              40
+            ]
+          ]
+        }
+      ],
+      "color": "#475569",
+      "bays": {
+        "starts": [
+          [
+            47,
+            48
+          ],
+          [
+            52,
+            47
+          ],
+          [
+            47,
+            52
+          ]
+        ],
+        "pickups": [
+          [
+            48,
+            47
+          ],
+          [
+            45,
+            48
+          ],
+          [
+            52,
+            45
+          ]
+        ],
+        "dropoffs": [
+          [
+            45,
+            52
+          ],
+          [
+            48,
+            45
+          ],
+          [
+            43,
+            48
+          ]
+        ]
+      }
+    }
+  ],
+  "safety": {
+    "enabled": true,
+    "robot_trigger": "body_in_outer",
+    "inner_stop_enabled": false,
+    "slow_front_m": 1.2,
+    "slow_back_m": 0.2,
+    "slow_half_width_m": 0.3,
+    "stop_front_m": 0.3,
+    "stop_back_m": 0.15,
+    "stop_half_width_m": 0.18,
+    "speed_scale": 0.2,
+    "robot_radius_m": 0.085
+  },
+  "conflict_zone": {
+    "rows": [
+      9,
+      51
+    ],
+    "cols": [
+      9,
+      51
+    ]
+  },
+  "approach_zones": {
+    "Z00": {
+      "rows": [
+        1,
+        19
+      ],
+      "cols": [
+        1,
+        19
+      ]
+    },
+    "Z01": {
+      "rows": [
+        1,
+        19
+      ],
+      "cols": [
+        20,
+        39
+      ]
+    },
+    "Z02": {
+      "rows": [
+        1,
+        19
+      ],
+      "cols": [
+        40,
+        59
+      ]
+    },
+    "Z10": {
+      "rows": [
+        20,
+        39
+      ],
+      "cols": [
+        1,
+        19
+      ]
+    },
+    "Z11": {
+      "rows": [
+        20,
+        39
+      ],
+      "cols": [
+        20,
+        39
+      ]
+    },
+    "Z12": {
+      "rows": [
+        20,
+        39
+      ],
+      "cols": [
+        40,
+        59
+      ]
+    },
+    "Z20": {
+      "rows": [
+        40,
+        59
+      ],
+      "cols": [
+        1,
+        19
+      ]
+    },
+    "Z21": {
+      "rows": [
+        40,
+        59
+      ],
+      "cols": [
+        20,
+        39
+      ]
+    },
+    "Z22": {
+      "rows": [
+        40,
+        59
+      ],
+      "cols": [
+        40,
+        59
+      ]
+    }
+  },
+  "network": {
+    "shape": [
+      3,
+      3
+    ],
+    "aisle_width_cells": 3,
+    "center_spacing_cells": 20,
+    "robots_per_zone": 3,
+    "initial_robot_matrix": [
+      [
+        3,
+        3,
+        3
+      ],
+      [
+        3,
+        3,
+        3
+      ],
+      [
+        3,
+        3,
+        3
+      ]
+    ],
+    "zone_order": [
+      "Z00",
+      "Z01",
+      "Z02",
+      "Z10",
+      "Z11",
+      "Z12",
+      "Z20",
+      "Z21",
+      "Z22"
+    ],
+    "allocation_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "edges": [
+      [
+        "Z00",
+        "Z01"
+      ],
+      [
+        "Z00",
+        "Z10"
+      ],
+      [
+        "Z01",
+        "Z02"
+      ],
+      [
+        "Z01",
+        "Z11"
+      ],
+      [
+        "Z02",
+        "Z12"
+      ],
+      [
+        "Z10",
+        "Z11"
+      ],
+      [
+        "Z10",
+        "Z20"
+      ],
+      [
+        "Z11",
+        "Z12"
+      ],
+      [
+        "Z11",
+        "Z21"
+      ],
+      [
+        "Z12",
+        "Z22"
+      ],
+      [
+        "Z20",
+        "Z21"
+      ],
+      [
+        "Z21",
+        "Z22"
+      ]
+    ]
+  },
+  "notes": [
+    "Zone bounds and conflict regions use inclusive grid coordinates.",
+    "The top-level conflict_zone is a compatibility bounding box, not one intersection.",
+    "A two-way zone is a corner joining two incident aisles.",
+    "All robots initially face north; coordinates are one metre apart.",
+    "Start, pickup, and dropoff bays are distinct degree-one leaves.",
+    "Every source and destination receives the same number of transport tasks.",
+    "Payload identity and mass are metadata; they do not alter vehicle dynamics.",
+    "Task goals are native finite visits; service timing is the controller's station action.",
+    "Nominal two-second service times describe the current controller, not configurable dwell overrides.",
+    "All robots are released at zero; destinations are private bays rather than aisle cells.",
+    "Safety rectangles use robot-body forward/lateral dimensions in metres; all robots inherit the scenario policy.",
+    "Only the outer slowdown rectangle is active by default; the retained inner dimensions are optional.",
+    "The initial robot trigger is body_in_outer; compare outer_overlap with the matched runner experiment."
+  ]
+}

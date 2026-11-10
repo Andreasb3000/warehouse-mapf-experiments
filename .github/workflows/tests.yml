@@ -1,0 +1,22 @@
+name: Python checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install -r requirements.txt -c constraints-tested.txt
+          python -m pip install -r requirements-ml.txt -c constraints-tested.txt --index-url https://download.pytorch.org/whl/cpu
+      - name: Run source-only tests
+        run: python scripts/test.py --quiet

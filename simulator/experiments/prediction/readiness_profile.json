@@ -1,0 +1,13 @@
+{
+  "name": "Pilot congestion forecast screen",
+  "horizon_s": 10,
+  "method": "joint",
+  "baselines": ["plan_only", "hold"],
+  "min_seeds": 5,
+  "min_positive_seeds": 3,
+  "min_precision": 0.8,
+  "min_recall": 0.8,
+  "max_core_p95_s": 0.5,
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 0
+}

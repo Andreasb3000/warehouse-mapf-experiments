@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "name": "three_way_6_robots",
+  "description": "Two robots approach from each of the west, east, and north arms. Straight and turning routes cross the T-junction, then finish in distinct side bays. All robots initially face north.",
+  "map_file": "three_way.map.json",
+  "coordinate_order": [
+    "row",
+    "column"
+  ],
+  "initial_orientation": "north",
+  "ticks_per_second": 10,
+  "task_mode": "finite",
+  "agents": [
+    {
+      "id": 0,
+      "approach": "west",
+      "start": [
+        13,
+        6
+      ],
+      "goals": [
+        [
+          14,
+          18
+        ]
+      ],
+      "color": "#2563eb"
+    },
+    {
+      "id": 1,
+      "approach": "west",
+      "start": [
+        13,
+        3
+      ],
+      "goals": [
+        [
+          3,
+          14
+        ]
+      ],
+      "color": "#2563eb"
+    },
+    {
+      "id": 2,
+      "approach": "east",
+      "start": [
+        11,
+        18
+      ],
+      "goals": [
+        [
+          10,
+          6
+        ]
+      ],
+      "color": "#e67e22"
+    },
+    {
+      "id": 3,
+      "approach": "east",
+      "start": [
+        11,
+        21
+      ],
+      "goals": [
+        [
+          6,
+          14
+        ]
+      ],
+      "color": "#e67e22"
+    },
+    {
+      "id": 4,
+      "approach": "north",
+      "start": [
+        6,
+        11
+      ],
+      "goals": [
+        [
+          14,
+          21
+        ]
+      ],
+      "color": "#16a085"
+    },
+    {
+      "id": 5,
+      "approach": "north",
+      "start": [
+        3,
+        11
+      ],
+      "goals": [
+        [
+          10,
+          3
+        ]
+      ],
+      "color": "#16a085"
+    }
+  ],
+  "conflict_zone": {
+    "rows": [
+      11,
+      13
+    ],
+    "cols": [
+      11,
+      13
+    ]
+  },
+  "approach_zones": {
+    "west": {
+      "rows": [
+        11,
+        13
+      ],
+      "cols": [
+        1,
+        10
+      ]
+    },
+    "east": {
+      "rows": [
+        11,
+        13
+      ],
+      "cols": [
+        14,
+        23
+      ]
+    },
+    "north": {
+      "rows": [
+        1,
+        10
+      ],
+      "cols": [
+        11,
+        13
+      ]
+    }
+  },
+  "notes": [
+    "Zone bounds include both endpoint cells.",
+    "Side bays keep finished robots outside the through aisles.",
+    "Travel lanes are nominal; the planner may use any free cell.",
+    "Starts are simultaneous; release schedules are not modeled.",
+    "Initial heading follows the existing simulator's north-facing pose."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "image": "warehouse-congestion:local",
+  "scenario": "three_way.scenario.json",
+  "parameters": {
+    "num_agents": 6,
+    "seed": 42,
+    "n_threads": 1,
+    "sim_duration": 600,
+    "ticks_per_second": 10,
+    "planner": "PBS",
+    "task_assigner_type": "distinct_one_goal",
+    "backup_solver": "PIBT",
+    "single_agent_solver": "SIPP",
+    "planner_invoke_policy": "default",
+    "sim_window_tick": 20,
+    "planning_window": 20,
+    "cutoffTime": 1,
+    "velocity": 100,
+    "stop_at_congestion": true,
+    "rotation": false,
+    "screen": 0
+  }
+}

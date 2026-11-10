@@ -1,0 +1,442 @@
+{
+  "schema_version": 1,
+  "name": "four_way_narrow_12",
+  "description": "12 simultaneous robots at a four-way junction with a 1-cell crossing and three-cell aisles. Every route crosses the center and ends in a private side bay.",
+  "map_file": "map.json",
+  "coordinate_order": [
+    "row",
+    "column"
+  ],
+  "initial_orientation": "north",
+  "ticks_per_second": 10,
+  "task_mode": "finite",
+  "agents": [
+    {
+      "id": 0,
+      "approach": "north",
+      "destination_arm": "east",
+      "start": [
+        20,
+        23
+      ],
+      "goals": [
+        [
+          26,
+          29
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#0d9488"
+    },
+    {
+      "id": 1,
+      "approach": "north",
+      "destination_arm": "south",
+      "start": [
+        18,
+        23
+      ],
+      "goals": [
+        [
+          29,
+          22
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#0d9488"
+    },
+    {
+      "id": 2,
+      "approach": "north",
+      "destination_arm": "west",
+      "start": [
+        16,
+        23
+      ],
+      "goals": [
+        [
+          22,
+          19
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#0d9488"
+    },
+    {
+      "id": 3,
+      "approach": "east",
+      "destination_arm": "south",
+      "start": [
+        23,
+        28
+      ],
+      "goals": [
+        [
+          31,
+          22
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#ea580c"
+    },
+    {
+      "id": 4,
+      "approach": "east",
+      "destination_arm": "west",
+      "start": [
+        23,
+        30
+      ],
+      "goals": [
+        [
+          22,
+          17
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#ea580c"
+    },
+    {
+      "id": 5,
+      "approach": "east",
+      "destination_arm": "north",
+      "start": [
+        23,
+        32
+      ],
+      "goals": [
+        [
+          19,
+          26
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#ea580c"
+    },
+    {
+      "id": 6,
+      "approach": "south",
+      "destination_arm": "west",
+      "start": [
+        28,
+        25
+      ],
+      "goals": [
+        [
+          22,
+          15
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#9333ea"
+    },
+    {
+      "id": 7,
+      "approach": "south",
+      "destination_arm": "north",
+      "start": [
+        30,
+        25
+      ],
+      "goals": [
+        [
+          17,
+          26
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#9333ea"
+    },
+    {
+      "id": 8,
+      "approach": "south",
+      "destination_arm": "east",
+      "start": [
+        32,
+        25
+      ],
+      "goals": [
+        [
+          26,
+          31
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#9333ea"
+    },
+    {
+      "id": 9,
+      "approach": "west",
+      "destination_arm": "north",
+      "start": [
+        25,
+        20
+      ],
+      "goals": [
+        [
+          15,
+          26
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#2563eb"
+    },
+    {
+      "id": 10,
+      "approach": "west",
+      "destination_arm": "east",
+      "start": [
+        25,
+        18
+      ],
+      "goals": [
+        [
+          26,
+          33
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#2563eb"
+    },
+    {
+      "id": 11,
+      "approach": "west",
+      "destination_arm": "south",
+      "start": [
+        25,
+        16
+      ],
+      "goals": [
+        [
+          33,
+          22
+        ]
+      ],
+      "release_at_s": 0,
+      "color": "#2563eb"
+    }
+  ],
+  "conflict_zone": {
+    "rows": [
+      22,
+      26
+    ],
+    "cols": [
+      22,
+      26
+    ]
+  },
+  "approach_zones": {
+    "north": {
+      "rows": [
+        2,
+        21
+      ],
+      "cols": [
+        23,
+        25
+      ]
+    },
+    "east": {
+      "rows": [
+        23,
+        25
+      ],
+      "cols": [
+        27,
+        46
+      ]
+    },
+    "south": {
+      "rows": [
+        27,
+        46
+      ],
+      "cols": [
+        23,
+        25
+      ]
+    },
+    "west": {
+      "rows": [
+        23,
+        25
+      ],
+      "cols": [
+        2,
+        21
+      ]
+    }
+  },
+  "benchmark": {
+    "family": "four_way",
+    "num_agents": 12,
+    "robots_per_approach": 3,
+    "core_width_cells": 1,
+    "arm_width_cells": 3,
+    "arm_length_cells": 22,
+    "core_free_cells": 9,
+    "free_cells": 261,
+    "release_pattern": "simultaneous",
+    "movement_counts": {
+      "east->north": 1,
+      "east->south": 1,
+      "east->west": 1,
+      "north->east": 1,
+      "north->south": 1,
+      "north->west": 1,
+      "south->east": 1,
+      "south->north": 1,
+      "south->west": 1,
+      "west->east": 1,
+      "west->north": 1,
+      "west->south": 1
+    }
+  },
+  "module": {
+    "geometry": "four_way",
+    "anchor": [
+      24,
+      24
+    ],
+    "bounds": {
+      "rows": [
+        0,
+        48
+      ],
+      "cols": [
+        0,
+        48
+      ]
+    },
+    "ports": [
+      {
+        "name": "north",
+        "outward_normal": [
+          -1,
+          0
+        ],
+        "cells": [
+          [
+            2,
+            23
+          ],
+          [
+            2,
+            24
+          ],
+          [
+            2,
+            25
+          ]
+        ],
+        "nominal_inbound_cell": [
+          2,
+          23
+        ],
+        "nominal_outbound_cell": [
+          2,
+          25
+        ]
+      },
+      {
+        "name": "east",
+        "outward_normal": [
+          0,
+          1
+        ],
+        "cells": [
+          [
+            23,
+            46
+          ],
+          [
+            24,
+            46
+          ],
+          [
+            25,
+            46
+          ]
+        ],
+        "nominal_inbound_cell": [
+          23,
+          46
+        ],
+        "nominal_outbound_cell": [
+          25,
+          46
+        ]
+      },
+      {
+        "name": "south",
+        "outward_normal": [
+          1,
+          0
+        ],
+        "cells": [
+          [
+            46,
+            25
+          ],
+          [
+            46,
+            24
+          ],
+          [
+            46,
+            23
+          ]
+        ],
+        "nominal_inbound_cell": [
+          46,
+          25
+        ],
+        "nominal_outbound_cell": [
+          46,
+          23
+        ]
+      },
+      {
+        "name": "west",
+        "outward_normal": [
+          0,
+          -1
+        ],
+        "cells": [
+          [
+            25,
+            2
+          ],
+          [
+            24,
+            2
+          ],
+          [
+            23,
+            2
+          ]
+        ],
+        "nominal_inbound_cell": [
+          25,
+          2
+        ],
+        "nominal_outbound_cell": [
+          23,
+          2
+        ]
+      }
+    ],
+    "cell_size_m": 1,
+    "composition_note": "Ports terminate at free aisle end cells behind the boundary wall. A future composer must open that wall, join matching ports, transform every grid coordinate, and replace finite parking tasks."
+  },
+  "notes": [
+    "Zone bounds are inclusive; only free cells can contain a robot.",
+    "Wide and narrow variants retain identical starts and destinations.",
+    "All initial headings are north, as required by current runtime initialization.",
+    "Lane directions are nominal; PBS may use any free cell.",
+    "Private goal bays have degree one and never obstruct through lanes.",
+    "Every individual route remains feasible with all other starts and goals blocked.",
+    "Difficulty is established by measured outcomes, not the case name."
+  ]
+}

@@ -1,0 +1,484 @@
+import os
+import sys
+import pathlib
+import subprocess
+import time
+import signal
+import fire
+import numpy as np
+import logging
+import datetime
+
+from typing import List, Tuple, Union
+from ArgosConfig import (SERVER_EXE, PBS_EXE, TPBS_EXE, RHCR_EXE, MASS_EXE,
+                         CONTAINER_PROJECT_ROOT, PROJECT_ROOT, setup_logging)
+from ArgosConfig.ToArgos import (obstacles, parse_map_file, create_Argos)
+
+logger = logging.getLogger(__name__)
+
+
+def get_current_time() -> str:
+    """Get the current time in the format YYYY-MM-DD HH-MM-SS.FFF."""
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+
+
+def init_start_locations(
+    map_str: List[str],
+    num_agents: int,
+) -> List[Tuple[str, str]]:
+    # Get free locations
+    h, w = len(map_str), len(map_str[0])
+    free_locations = []
+    for i in range(h):
+        for j in range(w):
+            if map_str[i][j] not in obstacles:
+                free_locations.append(i * w + j)
+    if len(free_locations) < num_agents:
+        logger.error(
+            f"Number of agents ({num_agents}) exceeds number of free locations ({len(free_locations)})."
+        )
+        exit(-1)
+    # Randomly select start locations
+    starts = np.random.choice(free_locations, size=num_agents, replace=False)
+    # We need to convert the coordinate from (row, col) to (col, row) because
+    # this is how Argos expects it.
+    return [(str(start % w), str(start // w)) for start in starts]
+
+
+def check_file(file_path: str):
+    if not os.path.exists(file_path):
+        logger.info(f"{file_path} not exists!")
+        return False
+    return True
+
+
+def run_simulator(args, timeout: float = None, output_log: str = None):
+    server_command, client_command, planner_command = args
+    f = open(output_log, 'w') if output_log else None
+    server_process = None
+    client_process = None
+    planner_process = None
+
+    def terminate_process_group(process: Union[subprocess.Popen, None]):
+        if process is None or process.poll() is not None:
+            return
+
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            return
+        except Exception:
+            process.kill()
+
+    def cleanup_processes():
+        terminate_process_group(planner_process)
+        terminate_process_group(client_process)
+        terminate_process_group(server_process)
+
+    def handle_termination(signum, _frame):
+        logger.info("Received signal %s, terminating simulator processes...",
+                    signum)
+        cleanup_processes()
+        raise SystemExit(128 + signum)
+
+    previous_handlers = {
+        sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)
+    }
+    for sig in previous_handlers:
+        signal.signal(sig, handle_termination)
+
+    try:
+        # Start the server process (new session for clean process-group kill)
+        server_process = subprocess.Popen(server_command, stdout=f, stderr=f,
+                                          start_new_session=True)
+
+        # Wait for a short period to ensure the server has started
+        time.sleep(1)
+
+        # Start the client process
+        client_process = subprocess.Popen(client_command, stdout=f, stderr=f,
+                                          start_new_session=True)
+
+        # Wait for the client process to complete
+        planner_process = subprocess.Popen(planner_command, stdout=f, stderr=f,
+                                           start_new_session=True)
+
+        # The client process will call the server to end, then the client end.
+        # The planner will detect the end of the server and end itself.
+        client_process.wait(timeout=timeout)
+        print(f"[{get_current_time()}] [Py] Client process finished.", file=f)
+
+        server_process.wait(timeout=timeout)
+        print(f"[{get_current_time()}] [Py] Server process finished.", file=f)
+
+        terminate_process_group(planner_process)
+        print(f"[{get_current_time()}] [Py] Planner process finished.", file=f)
+    except subprocess.TimeoutExpired:
+        logger.info("Timeout expired, killing processes...")
+    finally:
+        cleanup_processes()
+        for sig, previous_handler in previous_handlers.items():
+            signal.signal(sig, previous_handler)
+        if f:
+            f.close()
+        logger.info("Processes killed.")
+
+
+def run_lifelong_argos(
+    map_filepath: str = "maps/kiva_large_w_mode.json",
+    num_agents: int = 100,
+    visualizer: str = "argos",
+    argos_config_filepath: str = "output.argos",
+    stats_name: str = "stats.json",
+    save_stats: bool = False,
+    output_log: str = None,
+    port_num: int = 8182,
+    n_threads: int = 1,
+    sim_duration: int = 600 * 10,
+    stop_at_congestion: bool = True,
+    sim_window_tick: int = 20,
+    ticks_per_second: int = 10,
+    velocity: float = 200.0,
+    planner: str = "RHCR",
+    container: bool = False,
+    seed: int = 42,
+    screen: int = 0,
+    backup_solver: str = "PIBT",
+    planner_invoke_policy: str = "default",
+    task_assigner_type: str = "windowed",
+    planning_window: int = 10,
+    frame_grab: bool = False,
+    cutoffTime: int = 1,
+    # RHCR parameters
+    solver: str = "PBS",
+    single_agent_solver: str = "SIPP",
+    rotation: bool = False,
+    rotation_time: int = 1,
+    prioritize_start: bool = True,
+    suboptimal_bound: float = 1,
+    log: bool = False,
+    save_result: bool = False,
+    save_solver: bool = False,
+    save_heuristics_table: bool = False,
+    scenario_file: str = None,
+):
+    """Function to run the LSMART simulator with the given parameters.
+
+    Args:
+        map_filepath (str, optional): file path to map. Example maps are in the ``maps`` directory. If maps contains workstations (``w``) and endpoints (``e``), robots' tasks will be assigned alternately between workstations and endpoints. If not, robots' tasks will be randomly generated from the empty spaces. Defaults to ``maps/kiva_large_w_mode.json``.
+        num_agents (int, optional): number of robots. Defaults to 100.
+        scenario_file (str, optional): JSON file containing explicit starts and
+            finite per-robot goals. Requires PBS and distinct_one_goal.
+            Also accepted through LSMART_SCENARIO_FILE for browser runs.
+            Defaults to None, preserving random lifelong task assignment.
+        visualizer (str, optional): visualization mode. Options are ``none``
+            for headless execution, ``argos`` for the native Qt/OpenGL
+            visualizer, and ``web`` for the external event-stream visualizer
+            used by ``lsmart-viz``. Defaults to ``argos``.
+        argos_config_filepath (str, optional): file path to write the generated
+            Argos config file. Defaults to "output.argos".
+        stats_name (str, optional): file path to store the stats from the
+            simulator. Defaults to "stats.json".
+        save_stats (bool , optional): whether to save the stats. Defaults to
+            False.
+        output_log (str, optional): file path to store the stdout from the
+            simulator. If None, the output will not be saved to a file.
+            Defaults to None.
+        port_num (int, optional): port number of RPC server. Defaults to 8182.
+        n_threads (int, optional): number of threads to run Argos. Defaults to 1.
+        ticks_per_second (int, optional): the simulator runs in ``ticks``. The states of the robots are updated per tick. ``ticks_per_second`` specifies the number of ticks per simulation second used by the simulator. Defaults to 10.
+        sim_duration (int, optional): number of simulation ticks to run the
+            simulator. Defaults to 600 * 10 ticks, meaning 600 seconds at the
+            default rate of 10 ticks per second.
+        stop_at_congestion (bool, optional): whether to stop the simulation
+            when congestion is detected. Defaults to True.
+        sim_window_tick (int, optional): number of ticks to invoke the planner. Only applies to the periodic invocation policy. Defaults to 20 ticks.
+        velocity (float, optional): velocity of the robots in cm/s. Defaults to
+            200.0 cm/s.
+        planner (str, optional): planner to use. Options include:
+
+            - ``RHCR``: the Rolling Horizon Collision Resolution planner, (`Li et al. 2021`_). RHCR plans for windowed paths for all robots.
+            - ``MASS``: the MAPF-SSIPP-SPS planner, (`Yan et al. 2025`_). MASS plans for full-horizon paths with 2nd order dynamics for all robots.
+            - ``PBS``: the Priority-Based Search planner (`Ma et al. 2019`_). PBS plans for full-horizon paths for all robots.
+            - ``TPBS``: the `Transient` Priority-Based Search planner (`Morag et al. 2025`_). TPBS plans for full-horizon paths for all robots even if there are duplicate goals.
+
+            Defaults to ``RHCR``.
+        container (bool, optional): whether to use the container installation
+            paths. Defaults to False.
+        seed (int, optional): random seed. Defaults to 42.
+        screen (int, optional): logging options. Higher values increase verbosity. Defaults to 0.
+        backup_solver (str, optional): backup solver (fail policy) used in case the MAPF planner fails. Options include:
+
+            - ``PIBT``: the Priority Inheritance with Backtracking, (`Okumura et al. 2019`_).
+            - ``LRAStar``: the Local Repair Guided Waits, (`Li et al. 2021`_).
+            - ``GuidedPIBT``: Guided PIBT, (`Chen et al. 2024`_).
+
+            Defaults to ``PIBT``.
+        planner_invoke_policy (str, optional): planner invocation policy, options include:
+
+            - ``default``: the periodic policy where the planner is invoked periodically every ``sim_window_tick`` ticks.
+            - ``no_action``: the event-based policy where the planner is invoked when at least one robot's number of unfinished ADG actions is less than or equal to the ADG look-ahead distance (`Hönig et al. 2019`_).
+
+            Defaults to ``default``.
+        task_assigner_type (str, optional): task assigner (MAPF problem instance generator) used to generate problem instances. Options include:
+
+            - ``windowed``: the windowed task assigner (`Li et al. 2021`_), which assigns tasks within the planning window. This can only be used with the ``RHCR`` planner.
+            - ``distinct_one_goal``: the distinct one-goal task assigner, which assigns each robot a distinct goal. This can only be used with the ``PBS`` and ``MASS`` planners.
+            - ``one_goal``: the one-goal task assigner, which assigns each robot a goal regardless of duplicates. This can only be used with the ``TPBS`` planner.
+
+            Defaults to ``windowed``.
+        planning_window (int, optional): planning window in timesteps. The final planning window is the max of this value and the inferred planning window from ``sim_window_tick``.
+
+            Specifically, given ``sim_window_tick`` and ``ticks_per_second``, we compute the minimal planning window in timesteps required to cover the simulation window as follows:
+
+            .. math::
+                planning_window_ts = \\lceil \\frac{sim_window_tick}{ticks_per_second} \\times \\frac{velocity}{100} \\rceil
+
+            Then given the user-specified ``planning_window``, the final planning window is:
+
+            .. math::
+                planning_window = max(planning_window_ts, planning_window)
+
+            Defaults to 10.
+
+        cutoffTime (int, optional): time limit of the planner in seconds. With the periodic invocation policy (``default``), the ``cutoffTime`` should be less than or equal to the simulation window in seconds (:math:`\\frac{sim_window_tick}{ticks_per_second}`). Defaults to 1.
+        frame_grab (bool, optional): whether to enable frame grabber in Argos.
+            If enabled, the simulator will save screenshots to the ``frames``
+            folder. The screenshots can be combined into a video using external
+            tools. Defaults to False.
+        solver (str, optional): MAPF solver in RHCR. Options include ``PBS`` (`Ma et al. 2019`_) and ``PIBT`` (`Okumura et al. 2019`_). Defaults to ``PBS``.
+        single_agent_solver (str, optional): single agent solver in RHCR.
+            Options include ``SIPP`` (`Phillips et al. 2011`_) and ``ASTAR``.
+            Defaults to ``SIPP``.
+        rotation (bool, optional): whether the single-agent planning consider rotation in RHCR. Defaults to False.
+        rotation_time (int, optional): rotation time in timesteps in RHCR.
+            Defaults to 1.
+        prioritize_start (bool, optional): prioritize start in RHCR. Defaults
+            to True.
+        suboptimal_bound (float, optional): suboptimality bound of certain
+            solvers in RHCR. Defaults to 1.
+        log (bool, optional): logging in RHCR. Defaults to False.
+        save_result (bool, optional): save planning results or not in RHCR.
+            Defaults to False.
+        save_solver (bool, optional): save MAPF solver process in RHCR or not.
+            Defaults to False.
+        save_heuristics_table (bool, optional): save heuristic table or not.
+            Defaults to False.
+
+    .. _Li et al. 2021: https://arxiv.org/abs/2005.07371
+    .. _Yan et al. 2025: https://arxiv.org/abs/2412.13359
+    .. _Ma et al. 2019: https://arxiv.org/abs/1812.06356
+    .. _Morag et al. 2025: https://ojs.aaai.org/index.php/SOCS/article/view/35998
+    .. _Okumura et al. 2019: https://arxiv.org/abs/1901.11282
+    .. _Chen et al. 2024: https://arxiv.org/abs/2308.11234
+    .. _Hönig et al. 2019: https://ieeexplore.ieee.org/document/8620328
+    .. _Phillips et al. 2011: https://www.cs.cmu.edu/~maxim/files/sipp_icra11.pdf
+    """
+    visualizer = visualizer.lower()
+    if visualizer not in {"none", "web", "argos"}:
+        raise ValueError("visualizer must be one of: none, web, argos")
+
+    np.random.seed(seed)
+    setup_logging()
+    map_data, width, height = parse_map_file(map_filepath)
+
+    # Transform the map and scen to Argos config file, obstacles: '@', 'T'
+    scenario_file = scenario_file or os.environ.get("LSMART_SCENARIO_FILE")
+    scripted_tasks = None
+    if scenario_file:
+        if planner != "PBS" or task_assigner_type != "distinct_one_goal":
+            raise ValueError("Finite scripted scenarios require planner=PBS and task_assigner_type=distinct_one_goal")
+        from experiments.junction.scenario import load_scenario
+        robot_init_pos, scripted_tasks = load_scenario(
+            scenario_file, map_data, num_agents)
+    else:
+        robot_init_pos = init_start_locations(map_data, num_agents)
+
+    # Use absolute path for argos config
+    argos_config_filepath = os.path.abspath(argos_config_filepath)
+    task_file = None
+    if scripted_tasks is not None:
+        task_file = argos_config_filepath + ".tasks"
+        with open(task_file, "w") as stream:
+            stream.write(scripted_tasks)
+
+    create_Argos(
+        map_data=map_data,
+        output_file_path=argos_config_filepath,
+        width=width,
+        height=height,
+        robot_init_pos=robot_init_pos,
+        curr_num_agent=num_agents,
+        port_num=port_num,
+        n_threads=n_threads,
+        visualizer=visualizer,
+        sim_duration=sim_duration,
+        ticks_per_second=ticks_per_second,
+        screen=screen,
+        velocity=velocity,
+        container=container,
+        seed=seed,
+        frame_grab=frame_grab,
+    )
+    if screen > 0:
+        logger.info(f"Argos config file created at {argos_config_filepath}.")
+
+    # Infer look_ahead_dist from cutoffTime
+    # The look_ahead_dist is the number of actions the planner should
+    # look ahead to find the start location for the robot. The planner will
+    # return in cutoffTime seconds, so look_ahead_dist should be set to the
+    # number of actions that can be executed in cutoffTime seconds.
+    # Each action corresponds to half of a grid, which is 0.5 m, so the
+    # shortest time it takes to execute an action is
+    # 0.5 m / (velocity / 100 m/s).
+    look_ahead_dist = np.ceil(cutoffTime / (0.5 /
+                                            (velocity / 100))).astype(int)
+    look_ahead_tick = np.ceil(look_ahead_dist * (0.5 / (velocity / 100)) *
+                              ticks_per_second).astype(int)
+
+    # Infer the planning window
+    # planning window = sim window in timesteps + look_ahead_dist in timesteps
+    # The planner should make sure that the plan is valid for the next
+    # simulation window + look_ahead_dist
+    # Convert sim_window from ticks to timesteps, and velocity from cm/s to m/s
+    # plan_window_ts = np.ceil((sim_window_tick / ticks_per_second) *
+    #                          (velocity / 100) +
+    #                          look_ahead_dist / 2).astype(int)
+    plan_window_ts = np.ceil(
+        (sim_window_tick / ticks_per_second) * (velocity / 100)).astype(int)
+    # We need a planning window in all cases because the backup planner might
+    # be windowed
+    plan_window_ts = np.max([plan_window_ts, planning_window])
+    logger.info(f"{planner}: Planning window in timesteps: {plan_window_ts}")
+
+    # Path to the executables
+    if container:
+        server_path = pathlib.Path(CONTAINER_PROJECT_ROOT) / SERVER_EXE
+        pbs_path = pathlib.Path(CONTAINER_PROJECT_ROOT) / PBS_EXE
+        tpbs_path = pathlib.Path(CONTAINER_PROJECT_ROOT) / TPBS_EXE
+        rhcr_path = pathlib.Path(CONTAINER_PROJECT_ROOT) / RHCR_EXE
+        mass_path = pathlib.Path(CONTAINER_PROJECT_ROOT) / MASS_EXE
+    else:
+        server_path = pathlib.Path(PROJECT_ROOT) / SERVER_EXE
+        pbs_path = pathlib.Path(PROJECT_ROOT) / PBS_EXE
+        tpbs_path = pathlib.Path(PROJECT_ROOT) / TPBS_EXE
+        rhcr_path = pathlib.Path(PROJECT_ROOT) / RHCR_EXE
+        mass_path = pathlib.Path(PROJECT_ROOT) / MASS_EXE
+
+    try:
+        # print("Running simulator ...")
+        logger.info(
+            f"Running simulator with {num_agents} agents at port {port_num} ..."
+        )
+        server_command = [
+            str(server_path),
+            f"--num_robots={num_agents}",
+            f"--port_number={port_num}",
+            f"--output_file={stats_name}",
+            f"--save_stats={str(save_stats).lower()}",
+            f"--visualizer={visualizer}",
+            f"--screen={screen}",
+            f"--total_sim_step_tick={sim_duration}",
+            f"--stop_at_congestion={str(stop_at_congestion).lower()}",
+            f"--ticks_per_second={ticks_per_second}",
+            f"--look_ahead_dist={look_ahead_dist}",
+            f"--look_ahead_tick={look_ahead_tick}",
+            f"--seed={seed}",
+            f"--sim_window_tick={sim_window_tick}",
+            f"--sim_window_timestep={plan_window_ts}",
+            f"--plan_window_timestep={plan_window_ts}",
+            f"--planner_invoke_policy={planner_invoke_policy}",
+            f"--backup_planner={backup_solver}",
+            f"--backup_single_agent_solver={single_agent_solver}",
+            f"--map={map_filepath}",
+            f"--grid_type=regular",
+            f"--rotation={str(rotation).lower()}",
+            f"--rotation_time={rotation_time}",
+            f"--save_heuristics_table={str(save_heuristics_table).lower()}",
+            f"--task_assigner_type={task_assigner_type}",
+        ]
+        client_command = [
+            "argos3",
+            "-c",
+            f"{argos_config_filepath}",
+            # No color displays better in file output
+            "--no-color",
+        ]
+        if task_file:
+            server_command.append(f"--task_file={task_file}")
+
+        # Standard MAPF PBS
+        if planner == "PBS":
+            planner_command = [
+                pbs_path,
+                f"--map={map_filepath}",
+                f"--agentNum={num_agents}",
+                f"--portNum={port_num}",
+                f"--seed={seed}",
+                f"--screen={screen}",
+                f"--cutoffTime={cutoffTime}",
+            ]
+        # Transient MAPF PBS
+        elif planner == "TPBS":
+            planner_command = [
+                tpbs_path,
+                f"--map={map_filepath}",
+                f"--agentNum={num_agents}",
+                f"--portNum={port_num}",
+                f"--seed={seed}",
+                f"--screen={screen}",
+                f"--cutoffTime={cutoffTime}",
+            ]
+        # RHCR, typically windowed PBS
+        elif planner == "RHCR":
+            planner_command = [
+                rhcr_path,
+                f"--map={map_filepath}",
+                f"--agentNum={num_agents}",
+                f"--port_number={port_num}",
+                f"--seed={seed}",
+                f"--screen={screen}",
+                f"--planning_window={plan_window_ts}",
+                f"--simulation_window={plan_window_ts}",
+                f"--scenario=SMART",
+                f"--cutoffTime={cutoffTime}",
+                f"--rotation={rotation}",
+                f"--solver={solver}",
+                f"--single_agent_solver={single_agent_solver}",
+                f"--backup_solver={backup_solver}",
+                f"--rotation_time={rotation_time}",
+                f"--prioritize_start={str(prioritize_start).lower()}",
+                f"--suboptimal_bound={suboptimal_bound}",
+                f"--log={str(log).lower()}",
+                f"--save_result={str(save_result).lower()}",
+                f"--save_solver={str(save_solver).lower()}",
+                f"--save_heuristics_table={str(save_heuristics_table).lower()}",
+            ]
+        # MASS, typically PBS with 2nd order dynamics
+        elif planner == "MASS":
+            planner_command = [
+                mass_path,
+                f"--map={map_filepath}",
+                f"--agentNum={num_agents}",
+                f"--portNum={port_num}",
+                f"--seed={seed}",
+                f"--screen={screen}",
+                f"--simulation_window={sim_window_tick / ticks_per_second}",
+                f"--cutoffTime={cutoffTime}",
+                f"--saveInstance={False}",
+            ]
+        else:
+            logger.error(f"Unknown planner: {planner}")
+            exit(-1)
+        run_simulator(
+            args=(server_command, client_command, planner_command),
+            timeout=20 * sim_duration / ticks_per_second,
+            output_log=output_log,
+        )
+    except KeyboardInterrupt:
+        # print("KeyboardInterrupt: Stopping the experiment ...")
+        logger.info("KeyboardInterrupt: Stopping the experiment ...")
+
+
+if __name__ == "__main__":
+    fire.Fire(run_lifelong_argos)
