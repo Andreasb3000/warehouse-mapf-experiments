@@ -31,6 +31,7 @@ from scipy.ndimage import maximum_filter
 from features import observation_clock, pose_array, predicted_rasters, window_mean
 from experiments.prediction.joint import rollout
 from route_eta import score_route_eta, service_targets
+from spatial_partitions import PARTITIONS, aggregate_spatial_heat
 
 
 METHODS = ('none', 'nominal', 'rollout')
@@ -70,7 +71,7 @@ def road_mask(map_doc):
     return np.array([[cell not in '@T' for cell in row] for row in layout], dtype=bool)
 
 
-def forecast_cost_menu(prediction, road):
+def forecast_cost_menu(prediction, road, partition="cells", scenario=None):
     """The existing three-window, 3x3 slow-field adapter, at three fixed weights.
 
 PBS adds these nonnegative values to MOVE destination costs; WAIT retains its
@@ -85,6 +86,11 @@ identical for nominal and rollout selection, and are explicitly diagnosed.
     slow = np.tensordot(POLICY['window_weights'], prediction[:, 1], axes=(0, 0))
     expanded = maximum_filter(slow, size=POLICY['spatial_max_filter_cells'],
                               mode='constant', cval=0.)
+    if partition not in PARTITIONS:
+        raise ValueError(f'Unsupported spatial partition: {partition}')
+    # Apply original 3x3 maximum filter first, then partition into regions.
+    # For 'cells', keep precisely Jesse's original behavior.
+    expanded = aggregate_spatial_heat(expanded, road, scenario, partition)
     return [{'name': name, 'cell_penalties':
              (np.minimum(POLICY['max_cell_penalty'], weight * expanded) * road).ravel().tolist()}
             for name, weight in zip(('zero', 'mild', 'strong'), POLICY['cost_weights'])]
@@ -113,12 +119,15 @@ def _score_checked(score):
 
 class RouteSearchPolicy:
     def __init__(self, minimum_mean_eta_gain_s=POLICY['minimum_mean_eta_gain_s'],
-                 eta_horizon_s=POLICY['eta_horizon_s']):
+                 eta_horizon_s=POLICY['eta_horizon_s'], partition='cells'):
         if (not math.isfinite(minimum_mean_eta_gain_s) or minimum_mean_eta_gain_s < 0
                 or not math.isfinite(eta_horizon_s) or eta_horizon_s <= 0):
             raise ValueError('Margin must be finite/nonnegative and ETA horizon positive')
         self.minimum_mean_eta_gain_s = float(minimum_mean_eta_gain_s)
         self.eta_horizon_s = float(eta_horizon_s)
+        if partition not in PARTITIONS:
+            raise ValueError(f'Unknown spatial partition: {partition}')
+        self.partition = partition
 
     def propose(self, event, past, scenario, map_doc, method='rollout'):
         """Return the pre-planner bridge payload and causal forecast diagnostics.
@@ -147,11 +156,11 @@ active comparisons it supplies history ending at the current observation.
                              native_poll_before_completion=True)
             fields, _ = predicted_rasters(result, past, scenario, road.shape)
             prediction = window_mean(fields)
-            candidates = forecast_cost_menu(prediction, road)
+            candidates = forecast_cost_menu(prediction, road, self.partition, scenario)
             forecast_wall_s = time.perf_counter() - forecast_started
         metadata = _cost_metadata(candidates)
         diagnostics = dict(policy_version=POLICY['version'], method=method,
-                           candidate_count=len(candidates), candidates=metadata,
+                           spatial_partition=self.partition, candidate_count=len(candidates), candidates=metadata,
                            distinct_penalty_fields=len({c['penalty_sha256'] for c in metadata}),
                            forecast_wall_s=forecast_wall_s,
                            query_wall_s=time.perf_counter() - started,

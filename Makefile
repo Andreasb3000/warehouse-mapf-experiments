@@ -11,6 +11,7 @@ JOBS ?= 1
 EPOCHS ?= 30
 DEVICE ?= cpu
 HORIZON ?= 240
+PARTITION ?= cells
 
 .PHONY: help smoke test native route-smoke record dataset train evaluate predictors \
         predictor-quick fleet fleet-evaluate route-search safety gates search-gates \
@@ -82,7 +83,7 @@ fleet-figures:
 	"$(PYTHON)" benchmark/scripts/build_fleet_results.py --manifests "benchmark/data/fleet_pilots/$(FLEET_STUDY)/manifest.json"
 
 route-search:
-	"$(PYTHON)" benchmark/code/run_route_search.py --image "$(IMAGE)" --study "$(STUDY)" --fleets $(FLEETS) --seeds $(SEEDS) --methods none nominal rollout --horizon-s "$(HORIZON)"
+	"$(PYTHON)" benchmark/code/run_route_search.py --image "$(IMAGE)" --study "$(STUDY)" --fleets $(FLEETS) --seeds $(SEEDS) --methods none nominal rollout --horizon-s "$(HORIZON)" --partition "$(PARTITION)"
 	"$(PYTHON)" benchmark/scripts/build_route_search_results.py --studies "benchmark/data/route_search/$(STUDY)"
 
 safety:

@@ -27,6 +27,7 @@ from fleet_execution import digest, objects, summarize, write_json
 from decision_metrics import task_completions
 from run_decisions import LiveHistory
 from route_search_policy import RouteSearchPolicy
+from spatial_partitions import PARTITIONS
 from experiments.baseline.analyze import _objects
 from experiments.zones.run import docker_prefix, mounts, environment, flags
 from experiments.junction.scenario import load_scenario
@@ -232,7 +233,8 @@ def run_case(directory, spec, docker_host, timeout_s=5400, *, inputs=None):
                         spec['image_id'], 'python3', 'run_lifelong.py', '/inputs/map.json', *flags(params)]
     write_json(directory / 'command.json', command)
     history = TaskHistory(directory / 'simulator.log', tasks['tasks'])
-    policy = RouteSearchPolicy(minimum_mean_eta_gain_s=spec['minimum_mean_eta_gain_s'])
+    policy = RouteSearchPolicy(minimum_mean_eta_gain_s=spec['minimum_mean_eta_gain_s'],
+                               partition=spec['partition'])
     clock, phase = 0, 'propose'
     started = time.perf_counter()
     proposal_diag = {}; proposal_s = 0.; original = None; reason = None
@@ -304,6 +306,7 @@ def main():
     parser.add_argument('--fleets', type=int, nargs='+', choices=[27, 54, 81], default=[54])
     parser.add_argument('--seeds', type=int, nargs='+', default=[8401])
     parser.add_argument('--methods', nargs='+', choices=METHODS, default=list(METHODS))
+    parser.add_argument('--partition', choices=PARTITIONS, default='cells')
     parser.add_argument('--horizon-s', type=int, default=240)
     parser.add_argument('--minimum-mean-eta-gain-s', type=float, default=.5)
     args = parser.parse_args()
@@ -323,7 +326,8 @@ def main():
         if digest(REPO / relative) != expected:
             raise ValueError(f'Compiled native source mismatch: {relative}')
     build_paths = build_proof_artifacts(args.build_proof, image, compiled)
-    paths = [Path(__file__), REPORT/'code/route_search_policy.py', REPORT/'code/route_eta.py',
+    paths = [Path(__file__), REPORT/'code/route_search_policy.py',
+             REPORT/'code/spatial_partitions.py', REPORT/'code/route_eta.py',
              REPORT/'code/features.py', REPORT/'code/fleet_cases.py', REPORT/'code/fleet_execution.py',
              REPORT/'code/run_decisions.py', REPORT/'code/decision_metrics.py',
              REPORT/'code/record_dataset.py', REPO/'experiments/junction/scenario.py',
@@ -334,7 +338,8 @@ def main():
     hashes = {str(p.relative_to(REPORT.parent)): digest(p) for p in paths}
     specs = [dict(run_id=f'w{s}_fleet{n}_{m}', workload_seed=s, num_agents=n, method=m,
                   trigger='outer_overlap', horizon_s=args.horizon_s, image_id=image,
-                  minimum_mean_eta_gain_s=args.minimum_mean_eta_gain_s)
+                  minimum_mean_eta_gain_s=args.minimum_mean_eta_gain_s,
+                  partition=args.partition)
              for s in args.seeds for n in args.fleets for m in args.methods]
     random.Random(20261103).shuffle(specs)
     manifest = {'schema_version': 1, 'status': 'prepared', 'accounting': 'native_time_only',
@@ -342,7 +347,8 @@ def main():
                 'source_sha256': hashes, 'compiled_source_sha256': compiled, 'image_id': image, 'runs': specs,
                 'host': {'platform': platform.platform(), 'machine': platform.machine(),
                          'python': platform.python_version(), 'threads': 1},
-                'policy': {'version': 'native-route-candidate-search-v1', 'refresh_s': 2., 'warmup_s': 12.,
+                'policy': {'version': 'native-route-candidate-search-v1',
+                           'spatial_partition': args.partition, 'refresh_s': 2., 'warmup_s': 12.,
                            'minimum_mean_eta_gain_s': args.minimum_mean_eta_gain_s,
                            'cost_forecast_horizon_s': 20., 'eta_horizon_s': 30., 'cost_weights': [0., 2., 8.],
                            'candidate_budget': 3, 'primary_cpu_budget_per_candidate_s': 1.,
